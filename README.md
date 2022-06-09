@@ -1,2 +1,2 @@
-# classComponentsCounterPerUserRedux
+# counterClassComponents
 Created with CodeSandbox
