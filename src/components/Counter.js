@@ -10,7 +10,7 @@ class Counter extends Component {
   handleIncrement = (event) => {
     event.preventDefault();
     this.props.increment(this.state.amt);
-    this.setState({ count: this.state.count + this.state.amt });
+    //this.setState({ count: this.state.count + this.state.amt });
   };
 
   handleDecrement = (event) => {
@@ -23,7 +23,8 @@ class Counter extends Component {
   };
 
   render() {
-    const { name } = this.props;
+    //const { name, increment, decrement } = this.props;
+    // console.log(this.props);
 
     return (
       <div style={{ backgroundColor: "grey", margin: "10px" }}>

@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import Counter from "./Counter";
 import axios from "axios";
+import { connect } from "react-redux";
+import {
+  increment,
+  decrement,
+  totalIncrement,
+  totalDecrement
+} from "../redux/CounterReducer";
 
 class Container extends Component {
   state = {
@@ -13,6 +20,8 @@ class Container extends Component {
       .get("https://jsonplaceholder.typicode.com/users")
       .then((response) => {
         this.setState({ users: response.data });
+        console.log(this.props);
+        console.log(this.state);
       })
       .catch((error) => {
         console.log(error);
@@ -20,26 +29,31 @@ class Container extends Component {
   }
 
   handleTotalIncrement = (value) => {
-    this.setState({ total: this.state.total + value });
+    this.props.totalIncrement(value);
+    // this.setState({ total: this.state.total + value });
   };
 
   handleTotalDecrement = (value) => {
-    this.setState({ total: this.state.total - value });
+    this.props.totalDecrement(value);
+    //this.setState({ total: this.state.total - value });
   };
 
   handleIncrement = (event) => {
-    const currentState = this.state.count;
-    const amount = this.state.amount;
-    this.setState({ count: currentState + amount });
+    this.props.increment();
+    // const currentState = this.state.count;
+    // const amount = this.state.amount;
+    // this.setState({ count: currentState + amount });
   };
 
   handleDecrement = () => {
-    const currentState = this.state.count;
-    const amount = this.state.amount;
-    this.setState({ count: currentState - amount });
+    this.props.decrement();
+    //const currentState = this.state.count;
+    //const amount = this.state.amount;
+    //this.setState({ count: currentState - amount });
   };
 
   render() {
+    // console.log(this.props.increment);
     return (
       <div>
         <h2> Total Count: {this.state.total}</h2>
@@ -49,8 +63,10 @@ class Container extends Component {
                 <Counter
                   key={user.id}
                   name={user.name}
-                  increment={this.handleTotalIncrement}
-                  decrement={this.handleTotalDecrement}
+                  totalIncrement={totalIncrement}
+                  totalDecrement={totalDecrement}
+                  increment={increment}
+                  decrement={decrement}
                 />
               );
             })
@@ -59,4 +75,17 @@ class Container extends Component {
     );
   }
 }
-export default Container;
+
+const mapStateToProps = (state) => ({
+  count: state.count,
+  amount: state.amount,
+  users: state.users
+});
+
+const mapDispatchToProps = {
+  increment,
+  decrement,
+  totalIncrement,
+  totalDecrement
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Container);
